@@ -18,6 +18,8 @@ type UploadController struct{}
 func (u *UploadController) UploadResume(c *gin.Context) {
 	form, _ := c.MultipartForm()
 	files := form.File["files"]
+	fmt.Println("Files: ", files)
+	cont := ""
 	tempDir, err := os.MkdirTemp("", "temp-*")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -55,6 +57,7 @@ func (u *UploadController) UploadResume(c *gin.Context) {
 		buf.ReadFrom(b)
 		aiClient := &ai.OpenAIClient{}
 		content, err := aiClient.AnalyzeResume(buf.String())
+		cont = content.Name
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to analyze resume."+ err.Error()})
 			return 
@@ -68,6 +71,6 @@ func (u *UploadController) UploadResume(c *gin.Context) {
 		}
 	}
 	
-	c.JSON(http.StatusOK, gin.H{"msg": "File uploaded successfully."})
+	c.JSON(http.StatusOK, gin.H{"msg": "File uploaded successfully.", "files": files, "content": cont})
 	
 }

@@ -16,7 +16,7 @@ func (s *Routes) RegisterRoutes() {
 	uploadController := &controllers.UploadController{}
 	ResumesController := &controllers.ResumeController{}
 	s.Server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, 
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:5173"}, 
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
